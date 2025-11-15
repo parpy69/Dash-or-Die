@@ -183,13 +183,21 @@ class Game {
             this.camera.lookAt(0, 0, 0);
             
             // Reset systems for tunnel mode
+            console.log('🔄 Resetting player system...');
             this.playerSystem.reset();
+            console.log('🔄 Resetting obstacle system...');
             this.obstacleSystem.reset();
+            console.log('🔄 Resetting tunnel system...');
             this.tunnelSystem.reset();
             
             // Set game mode
             this.gameMode = new GameMode(mode);
             console.log('✅ Tunnel mode ready!');
+            
+            // Verify everything is visible
+            console.log('Player visible:', this.playerSystem.player.visible);
+            console.log('Player in scene:', this.scene.children.includes(this.playerSystem.player));
+            console.log('Tunnel segments in scene:', this.tunnelSystem.tunnelSegments.filter(s => this.scene.children.includes(s)).length);
         }
         
         // Start music

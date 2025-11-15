@@ -267,13 +267,23 @@ export class ObstacleSystem {
     }
     
     reset() {
-        // Hide all obstacles
+        // Hide all active obstacles
         for (const obstacle of this.obstacles) {
             obstacle.visible = false;
             obstacle.userData.active = false;
         }
         this.obstacles = [];
         this.spawnTimer = 0;
+        
+        // Ensure obstacle pool is in the scene
+        for (const obstacle of this.obstaclePool) {
+            if (!this.scene.children.includes(obstacle)) {
+                console.log('🔄 Re-adding obstacle to scene...');
+                this.scene.add(obstacle);
+            }
+            obstacle.visible = false;
+            obstacle.userData.active = false;
+        }
     }
 }
 
