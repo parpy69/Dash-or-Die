@@ -9,8 +9,6 @@ A cartoonish 3D tunnel dodging game built with Three.js.
 - **Progressive Difficulty**: Speed increases over time, obstacles spawn faster
 - **Multiple Game Modes**:
   - Endless Mode: Survive as long as possible
-  - Ranked 1v1 (Simulated): Compete against AI opponent
-  - Unranked 1v1 (Simulated): Casual competition mode
 - **Score System**: Track distance traveled and high scores
 - **Responsive Design**: Works on desktop and mobile devices
 
