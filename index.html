@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dash or Die</title>
+    <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+    <!-- Auth Screen -->
+    <div id="authScreen" class="menu-overlay">
+        <div class="auth-container">
+            <div class="auth-hero">
+                <div class="flying-car-icon">🚗</div>
+                <h1 class="game-title-auth">DASH OR DIE</h1>
+                <p class="tagline">Race Through the Neon Tunnel</p>
+            </div>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="signInTab">Sign In</button>
+                <button class="auth-tab" id="signUpTab">Sign Up</button>
+            </div>
+            
+            <!-- Sign In Form -->
+            <div id="signInForm" class="auth-form">
+                <input type="text" class="auth-input" id="signInUsername" placeholder="Username" />
+                <input type="password" class="auth-input" id="signInPassword" placeholder="Password" />
+                <button class="menu-btn" id="signInBtn">Sign In</button>
+                <button class="menu-btn secondary" id="guestBtn">Play as Guest</button>
+            </div>
+            
+            <!-- Sign Up Form -->
+            <div id="signUpForm" class="auth-form" style="display: none;">
+                <input type="text" class="auth-input" id="signUpUsername" placeholder="Username" />
+                <input type="email" class="auth-input" id="signUpEmail" placeholder="Email" />
+                <input type="password" class="auth-input" id="signUpPassword" placeholder="Password" />
+                <input type="password" class="auth-input" id="signUpConfirm" placeholder="Confirm Password" />
+                <button class="menu-btn" id="signUpBtn">Create Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Menu -->
+    <div id="mainMenu" class="menu-overlay" style="display: none;">
+        <div class="menu-content">
+            <h1 class="game-title">DASH OR DIE</h1>
+            <div class="welcome-text">Welcome, <span id="playerName">Guest</span>! 🏎️</div>
+            <button class="menu-btn" id="startBtn">Start Game</button>
+            <button class="menu-btn" id="modeBtn">Mode Select</button>
+            <button class="menu-btn" id="leaderboardBtn">Leaderboard</button>
+            <div class="high-score">High Score: <span id="menuHighScore">0</span></div>
+            <button class="menu-btn secondary" id="logoutBtn">Logout</button>
+        </div>
+    </div>
+    
+    <!-- Leaderboard Menu -->
+    <div id="leaderboardMenu" class="menu-overlay" style="display: none;">
+        <div class="menu-content leaderboard-content">
+            <h2>🏆 LEADERBOARD 🏆</h2>
+            <div id="leaderboardList" class="leaderboard-list">
+                <!-- Leaderboard entries will be inserted here -->
+            </div>
+            <button class="menu-btn secondary" id="leaderboardBackBtn">Back</button>
+        </div>
+    </div>
+
+    <!-- Mode Select Menu -->
+    <div id="modeMenu" class="menu-overlay" style="display: none;">
+        <div class="menu-content">
+            <h2>Select Mode</h2>
+            <button class="menu-btn" id="endlessBtn">Endless Tunnel</button>
+            <button class="menu-btn" id="raceBtn">Race Mode (8 Players)</button>
+            <button class="menu-btn secondary" id="backBtn">Back</button>
+        </div>
+    </div>
+
+    <!-- Game Over Menu -->
+    <div id="gameOverMenu" class="menu-overlay" style="display: none;">
+        <div class="menu-content">
+            <h2 class="game-over-title">GAME OVER</h2>
+            <div class="score-display">
+                <p>Score: <span id="finalScore">0</span></p>
+                <p>Distance: <span id="finalDistance">0</span>m</p>
+                <p class="high-score-label" id="newHighScore" style="display: none;">🎉 NEW HIGH SCORE! 🎉</p>
+            </div>
+            <button class="menu-btn" id="restartBtn">Restart</button>
+            <button class="menu-btn secondary" id="mainMenuBtn">Main Menu</button>
+        </div>
+    </div>
+
+    <!-- HUD -->
+    <div id="hud" style="display: none;">
+        <div class="hud-top">
+            <div class="hud-item">
+                <span class="hud-label">TIME</span>
+                <span class="hud-value" id="timeValue">0s</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">SCORE</span>
+                <span class="hud-value" id="scoreValue">0</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">DISTANCE</span>
+                <span class="hud-value" id="distanceValue">0m</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">SPEED</span>
+                <span class="hud-value" id="speedValue">1.0x</span>
+            </div>
+        </div>
+        <div class="hud-mode" id="modeLabel"></div>
+        <div class="hud-highscore">
+            <span class="hud-label">HIGH SCORE</span>
+            <span class="hud-value-small" id="hudHighScore">0</span>
+        </div>
+    </div>
+
+    <!-- Race HUD -->
+    <div id="raceHud" style="display: none;">
+        <div class="race-hud-top">
+            <div class="race-hud-item position-display">
+                <span class="position-number" id="racePosition">1</span>
+                <span class="position-suffix">st</span>
+            </div>
+            <div class="race-hud-item">
+                <span class="hud-label">PROGRESS</span>
+                <span class="hud-value" id="raceLap">0%</span>
+            </div>
+            <div class="race-hud-item">
+                <span class="hud-label">TIME</span>
+                <span class="hud-value" id="raceTime">0:00</span>
+            </div>
+        </div>
+        <div class="speed-boost-indicator" id="speedBoostIndicator" style="display: none;">
+            ⚡ SPEED BOOST ⚡
+        </div>
+        <div class="countdown-display" id="countdownDisplay" style="display: none;">3</div>
+    </div>
+
+    <!-- Race Results -->
+    <div id="raceResults" class="menu-overlay" style="display: none;">
+        <div class="menu-content">
+            <h2 class="race-results-title">RACE FINISHED!</h2>
+            <div class="position-display-large">
+                <span class="position-number-large" id="finalPosition">1</span>
+                <span class="position-suffix-large">st</span>
+            </div>
+            <div class="race-stats">
+                <p>Time: <span id="finalTime">0:00</span></p>
+            </div>
+            <button class="menu-btn" id="raceRestartBtn">Race Again</button>
+            <button class="menu-btn secondary" id="raceMenuBtn">Main Menu</button>
+        </div>
+    </div>
+
+    <!-- Mobile Controls -->
+    <div id="mobileControls" style="display: none;">
+        <div class="joystick" id="joystick">
+            <div class="joystick-inner"></div>
+        </div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="src/main.js"></script>
+</body>
+</html>
+
