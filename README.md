@@ -4,6 +4,12 @@ A high-octane 3D racing and tunnel dodging game built with Three.js. Race agains
 
 ![Game Preview](https://img.shields.io/badge/Status-Playable-brightgreen) ![Three.js](https://img.shields.io/badge/Three.js-v0.160.0-blue) ![License](https://img.shields.io/badge/License-MIT-yellow)
 
+## 🎮 [PLAY NOW - Live Demo](https://dash-or-die.vercel.app/)
+
+**👉 [https://dash-or-die.vercel.app/](https://dash-or-die.vercel.app/) 👈**
+
+---
+
 ## 🎮 Game Modes
 
 ### 🌀 Endless Tunnel Mode
