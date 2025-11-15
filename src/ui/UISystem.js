@@ -98,8 +98,14 @@ export class UISystem {
         
         // Show and update high score display in bottom left
         const highScoreElement = document.querySelector('.hud-highscore');
+        console.log('🎯 High Score Element:', highScoreElement);
         if (highScoreElement) {
             highScoreElement.style.display = 'flex';
+            console.log('✅ High Score Display Set to Flex');
+            console.log('Position:', window.getComputedStyle(highScoreElement).position);
+            console.log('Bottom:', window.getComputedStyle(highScoreElement).bottom);
+            console.log('Left:', window.getComputedStyle(highScoreElement).left);
+            console.log('Display:', window.getComputedStyle(highScoreElement).display);
         }
         const highScore = this.getHighScore();
         document.getElementById('hudHighScore').textContent = highScore;

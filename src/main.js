@@ -30,7 +30,7 @@ class Game {
         this.distance = 0;
         this.speed = 1.0;
         this.baseSpeed = 0.2;
-        this.maxSpeed = 2.0; // Cap at 10x (10 / baseSpeed / speed multiplier)
+        this.maxSpeed = 1.5; // Cap at 7.5x (7.5 / baseSpeed / speed multiplier)
         this.speedIncrementPerSecond = 0.2; // 1x every 5 seconds (0.2 * 5 = 1.0)
         this.gameTime = 0; // Track game time
         

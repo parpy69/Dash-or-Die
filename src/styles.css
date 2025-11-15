@@ -335,9 +335,9 @@ canvas {
 }
 
 .hud-highscore {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 20px !important;
     padding: 10px 15px;
     background: rgba(0, 0, 0, 0.8);
     border: 2px solid rgba(255, 215, 0, 0.5);
@@ -346,7 +346,8 @@ canvas {
     flex-direction: row;
     align-items: center;
     gap: 10px;
-    z-index: 150;
+    z-index: 150 !important;
+    pointer-events: none;
 }
 
 .hud-value-small {
