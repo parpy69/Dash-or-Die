@@ -96,13 +96,23 @@ export class UISystem {
     showHUD() {
         document.getElementById('hud').style.display = 'block';
         
-        // Update high score display in HUD
+        // Show and update high score display in bottom left
+        const highScoreElement = document.querySelector('.hud-highscore');
+        if (highScoreElement) {
+            highScoreElement.style.display = 'flex';
+        }
         const highScore = this.getHighScore();
         document.getElementById('hudHighScore').textContent = highScore;
     }
     
     hideHUD() {
         document.getElementById('hud').style.display = 'none';
+        
+        // Hide high score display
+        const highScoreElement = document.querySelector('.hud-highscore');
+        if (highScoreElement) {
+            highScoreElement.style.display = 'none';
+        }
     }
     
     showRaceHUD() {
