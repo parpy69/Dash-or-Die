@@ -230,8 +230,7 @@ class Game {
             this.uiSystem.updateRaceHUD(
                 this.raceMode.getCurrentPosition(),
                 progress,
-                raceTime,
-                this.raceMode.playerSpeedBoostActive
+                raceTime
             );
         } else {
             // Tunnel mode update

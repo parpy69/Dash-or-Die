@@ -113,7 +113,7 @@ export class UISystem {
         document.getElementById('raceHud').style.display = 'none';
     }
     
-    updateRaceHUD(position, progress, time, speedBoostActive) {
+    updateRaceHUD(position, progress, time) {
         // Update position
         const positionElement = document.getElementById('racePosition');
         positionElement.textContent = position;
@@ -132,10 +132,6 @@ export class UISystem {
         const seconds = Math.floor(time % 60);
         document.getElementById('raceTime').textContent = 
             `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        
-        // Update speed boost indicator
-        const boostIndicator = document.getElementById('speedBoostIndicator');
-        boostIndicator.style.display = speedBoostActive ? 'block' : 'none';
     }
     
     updateHUD(score, distance, speed, gameTime) {

@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { RaceTrackSystem } from '../systems/RaceTrackSystem.js';
 import { NPCRacerSystem } from '../systems/NPCRacerSystem.js';
-import { PowerUpSystem } from '../systems/PowerUpSystem.js';
 import { RacePlayerSystem } from '../systems/RacePlayerSystem.js';
 import { RaceObstacleSystem } from '../systems/RaceObstacleSystem.js';
 
@@ -10,7 +9,6 @@ export class RaceMode {
         this.game = game;
         this.trackSystem = null;
         this.npcSystem = null;
-        this.powerUpSystem = null;
         this.racePlayerSystem = null;
         this.obstacleSystem = null;
         this.playerData = null;
@@ -18,11 +16,11 @@ export class RaceMode {
         this.raceFinished = false;
         this.startTime = 0;
         this.finishTime = 0;
-        this.playerSpeedBoostActive = false;
-        this.playerSpeedBoostTimer = 0;
         this.countdown = 3;
         this.countdownActive = false;
         this.countdownTimer = 0;
+        this.finishOrder = [];
+        this.previousHeight = 0.2;
         
         this.init();
     }
@@ -66,14 +64,8 @@ export class RaceMode {
         // Create NPCs
         this.npcSystem = new NPCRacerSystem(this.game.scene, this.trackSystem);
         
-        // Track finish order
-        this.finishOrder = [];
-        
         // Set up NPC finish callback
         this.npcSystem.onNPCFinish = (npc) => this.handleNPCFinish(npc);
-        
-        // Create power-ups
-        this.powerUpSystem = new PowerUpSystem(this.game.scene, this.trackSystem);
         
         // Create obstacles
         this.obstacleSystem = new RaceObstacleSystem(this.game.scene, this.trackSystem);
@@ -140,14 +132,6 @@ export class RaceMode {
         if (this.raceFinished) {
             console.log('Race finished, stopping updates');
             return;
-        }
-        
-        // Safety check - prevent infinite loops
-        if (!this.updateCount) this.updateCount = 0;
-        this.updateCount++;
-        
-        if (this.updateCount % 100 === 0) {
-            console.log('Update count:', this.updateCount, 'Progress:', this.getProgress().toFixed(1) + '%');
         }
         
         // Handle countdown
@@ -306,24 +290,6 @@ export class RaceMode {
             console.error('NPC update error:', error);
         }
         
-        // Power-ups disabled temporarily to prevent freezing
-        // this.powerUpSystem.update(deltaTime);
-        // this.powerUpSystem.checkCollection(this.racePlayerSystem.getPosition(), () => {
-        //     this.applyPlayerSpeedBoost();
-        // });
-        // const npcCollected = this.powerUpSystem.checkNPCCollection(this.npcSystem.getNPCs());
-        // if (npcCollected >= 0) {
-        //     this.npcSystem.applySpeedBoost(npcCollected);
-        // }
-        
-        // Update player speed boost
-        if (this.playerSpeedBoostActive) {
-            this.playerSpeedBoostTimer -= deltaTime;
-            if (this.playerSpeedBoostTimer <= 0) {
-                this.playerSpeedBoostActive = false;
-            }
-        }
-        
         // Check if player crossed finish line
         try {
             const raceCompleted = this.trackSystem.checkCheckpoint(
@@ -376,12 +342,6 @@ export class RaceMode {
         
         // Look at the car
         this.game.camera.lookAt(playerPos.x, playerPos.y + 0.5, playerPos.z);
-    }
-    
-    applyPlayerSpeedBoost() {
-        this.playerSpeedBoostActive = true;
-        this.playerSpeedBoostTimer = 3;
-        this.game.playerSystem.moveSpeed = 18; // 1.5x speed
     }
     
     getCurrentPosition() {
@@ -519,9 +479,6 @@ export class RaceMode {
         console.log('Cleaning up race mode...');
         
         // Clean up race-specific systems
-        if (this.powerUpSystem) {
-            this.powerUpSystem.reset();
-        }
         if (this.npcSystem) {
             this.npcSystem.reset();
         }
