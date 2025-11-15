@@ -18,10 +18,32 @@ export class RaceObstacleSystem {
         const roadLength = 800;
         const roadWidth = 20;
         const numObstacles = 12; // Number of obstacles
+        
+        // Ramp zone to avoid (ramp is at Z=0, length=12, so -6 to +6)
+        const rampStartZ = -6;
+        const rampEndZ = 6;
+        const rampBuffer = 10; // Extra space around ramp to avoid
 
         for (let i = 0; i < numObstacles; i++) {
-            // Random position along the track (avoid start and finish areas)
-            const z = -350 + (i * 60) + (Math.random() * 20 - 10); // Spread along track
+            let z;
+            let attempts = 0;
+            
+            // Keep trying to find a position that's not on the ramp
+            do {
+                z = -350 + (i * 60) + (Math.random() * 20 - 10); // Spread along track
+                attempts++;
+                
+                // If we've tried too many times, force it to a safe zone
+                if (attempts > 10) {
+                    if (i % 2 === 0) {
+                        z = -350 + (i * 60); // Before ramp
+                    } else {
+                        z = 50 + (i * 60); // After ramp
+                    }
+                    break;
+                }
+            } while (z >= (rampStartZ - rampBuffer) && z <= (rampEndZ + rampBuffer));
+            
             const x = (Math.random() * 12) - 6; // Random X within road bounds (-6 to 6)
 
             // Create obstacle type randomly
@@ -45,7 +67,7 @@ export class RaceObstacleSystem {
             this.obstacles.push({
                 mesh: mesh,
                 position: new THREE.Vector3(x, 0.5, z),
-                radius: 1.2, // Collision radius
+                radius: 0.8, // Collision radius (reduced from 1.2 to 0.8)
                 type: obstacleType
             });
 
