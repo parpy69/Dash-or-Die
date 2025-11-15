@@ -20,7 +20,7 @@ export class RaceMode {
         this.countdownActive = false;
         this.countdownTimer = 0;
         this.finishOrder = [];
-        this.previousHeight = 0.2;
+        this.previousHeight = 0.8; // Lifted to prevent clipping
         
         this.init();
     }
@@ -75,7 +75,7 @@ export class RaceMode {
         
         // Initialize player data with racing controls
         const startPos = this.trackSystem.getStartPosition(0).clone();
-        startPos.y = 0; // Make sure car is on the ground
+        startPos.y = 0.8; // Lift car above ground to prevent clipping through floor
         
         this.playerData = {
             position: startPos,
@@ -214,6 +214,8 @@ export class RaceMode {
             this.playerData.position.z += obstacleCollision.z * 0.3;
             this.playerData.speed *= 0.3; // Slow down significantly
             console.log('💥 Hit obstacle!');
+            // Play obstacle hit sound
+            this.game.audioSystem.playObstacleHitSound();
         } else {
             // Check track boundaries - prevent driving off track
             if (this.trackSystem.trackBounds) {
@@ -231,7 +233,7 @@ export class RaceMode {
         
         // ===== RAMP PHYSICS - Smooth momentum-based physics =====
         const gravity = -15; // Gravity pulling car down (reduced for smoother arc)
-        const groundLevel = 0.2; // Normal car height on ground
+        const groundLevel = 0.2; // Normal car height on ground (lifted to prevent clipping)
         
         // Store previous height to calculate vertical velocity from ramp slope
         if (!this.previousHeight) this.previousHeight = groundLevel;
@@ -301,6 +303,9 @@ export class RaceMode {
             if (raceCompleted && !this.playerData.finished) {
                 this.playerData.finished = true;
                 this.finishTime = Date.now();
+                
+                // Play race finish sound
+                this.game.audioSystem.playRaceFinishSound();
                 
                 // Hide player car
                 if (this.racePlayerSystem && this.racePlayerSystem.carModel) {

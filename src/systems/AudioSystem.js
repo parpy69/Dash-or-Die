@@ -195,5 +195,88 @@ export class AudioSystem {
         noise.start(now);
         noise.stop(now + 0.2);
     }
+    
+    playObstacleHitSound() {
+        if (!this.audioContext) return;
+        
+        const now = this.audioContext.currentTime;
+        
+        // Create a "thud" sound - lower frequency impact
+        const impact = this.audioContext.createOscillator();
+        impact.type = 'triangle';
+        impact.frequency.setValueAtTime(80, now); // Low thud
+        impact.frequency.exponentialRampToValueAtTime(40, now + 0.15); // Drop in pitch
+        
+        const impactGain = this.audioContext.createGain();
+        impactGain.gain.setValueAtTime(0.4, now);
+        impactGain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+        
+        impact.connect(impactGain);
+        impactGain.connect(this.sfxGain);
+        
+        // Add a "crash" sound - higher frequency noise
+        const crash = this.audioContext.createOscillator();
+        crash.type = 'square';
+        crash.frequency.value = 200;
+        
+        const crashGain = this.audioContext.createGain();
+        crashGain.gain.setValueAtTime(0.2, now);
+        crashGain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+        
+        crash.connect(crashGain);
+        crashGain.connect(this.sfxGain);
+        
+        impact.start(now);
+        impact.stop(now + 0.15);
+        crash.start(now);
+        crash.stop(now + 0.1);
+    }
+    
+    playRaceFinishSound() {
+        if (!this.audioContext) return;
+        
+        const now = this.audioContext.currentTime;
+        
+        // Create a victory fanfare - ascending notes
+        const notes = [523, 659, 784, 1047]; // C5, E5, G5, C6 - major chord arpeggio
+        
+        notes.forEach((freq, i) => {
+            const osc = this.audioContext.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            
+            const gain = this.audioContext.createGain();
+            const startTime = now + (i * 0.15); // Stagger notes
+            gain.gain.setValueAtTime(0, startTime);
+            gain.gain.linearRampToValueAtTime(0.3, startTime + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.4);
+            
+            osc.connect(gain);
+            gain.connect(this.sfxGain);
+            
+            osc.start(startTime);
+            osc.stop(startTime + 0.4);
+        });
+        
+        // Add a final "success" chord
+        setTimeout(() => {
+            const chord = [1047, 1319, 1568]; // C6, E6, G6 - major chord
+            chord.forEach(freq => {
+                const osc = this.audioContext.createOscillator();
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                
+                const gain = this.audioContext.createGain();
+                gain.gain.setValueAtTime(0.25, now + 0.6);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 1.5);
+                
+                osc.connect(gain);
+                gain.connect(this.sfxGain);
+                
+                osc.start(now + 0.6);
+                osc.stop(now + 1.5);
+            });
+        }, 0);
+    }
 }
 

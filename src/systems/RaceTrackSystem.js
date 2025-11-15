@@ -451,9 +451,9 @@ export class RaceTrackSystem {
             const progress = (zPosition - this.rampStartZ) / this.rampLength;
             // Height follows a slope up then down
             const height = Math.sin(progress * Math.PI) * this.rampHeight;
-            return height + 0.2; // Add base car height
+            return height + 0.8; // Add base car height (lifted to prevent clipping)
         }
-        return 0.2; // Normal ground level
+        return 0.8; // Normal ground level (lifted to prevent clipping)
     }
     
     createCheckpoints() {

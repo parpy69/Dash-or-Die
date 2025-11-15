@@ -52,7 +52,7 @@ export class NPCRacerSystem {
             npc.position.z += headStart;
             
             npc.mesh.position.copy(npc.position);
-            npc.mesh.position.y = 0.2; // Same height as player
+            npc.mesh.position.y = 0.8; // Same height as player (lifted to prevent clipping)
             
             console.log(`NPC ${i} created at position:`, npc.position.x.toFixed(2), npc.position.y.toFixed(2), npc.position.z.toFixed(2), 'Speed:', npc.speed.toFixed(1), 'Head start:', headStart);
             
@@ -248,7 +248,7 @@ export class NPCRacerSystem {
             
             // ===== RAMP PHYSICS FOR NPCs - Smooth momentum-based =====
             const gravity = -15;
-            const groundLevel = 0.2;
+            const groundLevel = 0.8; // Lifted to prevent clipping
             
             // Store previous height for this NPC
             if (!npc.previousHeight) npc.previousHeight = groundLevel;
